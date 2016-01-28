@@ -3,6 +3,7 @@
 #include "CommandWatcher.h"
 #include "Timer.h"
 #include "OneButton.h"
+#include "CapButton.h"
 #include "PresenceDetector.h"
 #include "StripManager.h"
 #include <Tweener.h>
@@ -14,7 +15,7 @@ Adafruit_DotStar button_strip = Adafruit_DotStar( 1, 7, 8, DOTSTAR_BRG);
 PresenceDetector detector(3);
 TagWatcher tagWatcher(2);
 CommandWatcher commandWatcher;
-OneButton button(6, true);
+CapButton button = CapButton();
 Tweener tweener2;
 StripManager stripManager;
 
@@ -23,8 +24,9 @@ boolean buttonEnabled = false;
 void setup(){
   
   Serial.begin(115200);
-  Serial.print("BEGIN");
 
+  button.connect();
+  
   pinMode(13, OUTPUT);
   digitalWrite(13,HIGH);
   
@@ -38,6 +40,8 @@ void setup(){
 
   button.setClickTicks(350);
   button.attachClick(handleButtonClick);
+  button.attachPress(handleButtonPress);
+  button.attachRelease(handleButtonRelease);
   button.attachDoubleClick(handleButtonDoubleClick);
 
   detector.onPresenceDetected(handlePresenceDetected);
@@ -47,7 +51,6 @@ void setup(){
 //     stripManager.setToPresent();
 
   tweener2.multiplier = .1;
-
 
 }
 
@@ -59,13 +62,12 @@ void loop(){
   detector.tick();
   stripManager.tick();
   
-  if ( buttonEnabled ) button.tick();
+  button.tick();
 
 
    
   button_strip.setBrightness(tweener2.value);
   button_strip.show();
-   
 }
 
 
@@ -73,23 +75,24 @@ void loop(){
 void handleTagChange( String tag ) {
   
   if ( tag == "NONE" ) {
-     detector.resetTimeout();
+     detector.enableTimeout();
      stripManager.setToPresent();
   } else {
      detector.stopTimeout();
      stripManager.setToOn();
   }
-  String jsonOutput = "{\"e\":\"t\",\"v\":\"" + tag + "\"}";
-  
-  Serial.println( jsonOutput ); 
+  //String jsonOutput = "{\"e\":\"t\",\"v\":\"" + tag + "\"}";
+//  Serial.println( jsonOutput ); 
+  Serial.print("(t,"+tag+")")
+
 }
 
 
 void handleCommand( String command ) {
   
-  if ( command == "enableButton" ) {
+  if ( command == "eb" ) {
     enableButton();
-  } else if ( command == "disableButton" ) {
+  } else if ( command == "db" ) {
     disableButton();
   }
   
@@ -103,17 +106,21 @@ void handleCommand( String command ) {
 
 void handlePresenceDetected() {
 
-    String jsonOutput = "{\"e\":\"p\",\"v\":\"t\"}";
-    Serial.println( jsonOutput ); 
+//    String jsonOutput = "{\"e\":\"p\",\"v\":\"t\"}";
+//    Serial.println( jsonOutput ); 
+    Serial.print("(p,t)")
+
 
      stripManager.setToPresent();
 }
 
 void handlePresenceLost() {
 
-    String jsonOutput = "{\"e\":\"p\",\"v\":\"f\"}";
+//    String jsonOutput = "{\"e\":\"p\",\"v\":\"f\"}";
+//    Serial.println( jsonOutput ); 
 
-    Serial.println( jsonOutput ); 
+    Serial.print("(p,f)")
+
     stripManager.setToOff();
 
 }
@@ -124,20 +131,31 @@ void handlePresenceLost() {
 
 void handleButtonClick() {
   
-  String jsonOutput = "{\"event\":\"b\",\"v\":\"click\"}";
-  Serial.println( jsonOutput ); 
-  
+//  String jsonOutput = "{\"e\":\"b\",\"v\":\"click\"}";
+//  Serial.println( jsonOutput ); 
+   Serial.print("(b,c)")
   
 }
 
 void handleButtonDoubleClick() {
 
-  String jsonOutput = "{\"event\":\"b\",\"v\":\"double\"}";
-  Serial.println( jsonOutput ); 
+//  String jsonOutput = "{\"e\":\"b\",\"v\":\"double\"}";
+//  Serial.println( jsonOutput ); 
+   Serial.print("(b,dc)")
+}
+
+void handleButtonPress() {
+    tweener2.targetValue = 60;
+    tweener2.value = 60;
+}
+
+void handleButtonRelease() {
+  tweener2.targetValue = 255;  
 }
 
 void enableButton() {
   tweener2.targetValue = 255;
+  tweener2.value = 255;
   buttonEnabled = true;
 }
 

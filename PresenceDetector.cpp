@@ -30,10 +30,18 @@ void PresenceDetector::onPresenceLost(presenceLostCallbackFunction newFunction){
   _presenceLostCallbackFunc = newFunction;
 }
 
-void PresenceDetector::resetTimeout() {
+void PresenceDetector::enableTimeout() {
   _enabled = true;
-	_timer.stop(_timerId);
-	_timerId = _timer.after(1000 * 30, losePresence,0);	
+  resetTimeout();
+}
+
+void PresenceDetector::resetTimeout() {
+  
+  _timer.stop(_timerId);
+
+  if ( _enabled ) {
+  	_timerId = _timer.after(1000 * 30, losePresence,0);	
+  }
 }
 
 void PresenceDetector::stopTimeout() {
@@ -52,10 +60,10 @@ void PresenceDetector::tick(void){
   if (digitalRead(_sensorPin) == HIGH) {
 	  
 	  if ( !_detected ) {
-		  
 	  	_detected = true;
-	    if (_enabled && _presenceDetectedCallbackFunc) _presenceDetectedCallbackFunc();
+	    if (_presenceDetectedCallbackFunc) _presenceDetectedCallbackFunc();
 	  }
+   
 	  resetTimeout();
   }
 

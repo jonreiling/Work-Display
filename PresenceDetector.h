@@ -24,6 +24,7 @@ public:
   void tick(void);
   void resetTimeout();
   void stopTimeout();
+  void enableTimeout();
 	  
 	  
   
