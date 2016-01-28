@@ -83,7 +83,7 @@ void handleTagChange( String tag ) {
   }
   //String jsonOutput = "{\"e\":\"t\",\"v\":\"" + tag + "\"}";
 //  Serial.println( jsonOutput ); 
-  Serial.print("(t,"+tag+")")
+  Serial.print("(t,"+tag+")");
 
 }
 
@@ -108,7 +108,7 @@ void handlePresenceDetected() {
 
 //    String jsonOutput = "{\"e\":\"p\",\"v\":\"t\"}";
 //    Serial.println( jsonOutput ); 
-    Serial.print("(p,t)")
+    Serial.print("(p,t)");
 
 
      stripManager.setToPresent();
@@ -119,7 +119,7 @@ void handlePresenceLost() {
 //    String jsonOutput = "{\"e\":\"p\",\"v\":\"f\"}";
 //    Serial.println( jsonOutput ); 
 
-    Serial.print("(p,f)")
+    Serial.print("(p,f)");
 
     stripManager.setToOff();
 
@@ -133,7 +133,7 @@ void handleButtonClick() {
   
 //  String jsonOutput = "{\"e\":\"b\",\"v\":\"click\"}";
 //  Serial.println( jsonOutput ); 
-   Serial.print("(b,c)")
+   Serial.print("(b,c)");
   
 }
 
@@ -141,7 +141,7 @@ void handleButtonDoubleClick() {
 
 //  String jsonOutput = "{\"e\":\"b\",\"v\":\"double\"}";
 //  Serial.println( jsonOutput ); 
-   Serial.print("(b,dc)")
+   Serial.print("(b,dc)");
 }
 
 void handleButtonPress() {
