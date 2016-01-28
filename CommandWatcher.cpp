@@ -50,7 +50,7 @@ void CommandWatcher::evaluateCommand(String command) {
       
     } else {
       
-      command = command.substring(4);
+      command = command.substring(3);
       command = command.substring(0,command.length()-1);
       if ( _commandCallback ) _commandCallback( command );
     }
