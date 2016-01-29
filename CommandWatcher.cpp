@@ -8,7 +8,7 @@
 // ----- Initialization and Default Values -----
 
 CommandWatcher::CommandWatcher(){
-  Serial.begin(115200);
+  Serial.begin(9600);
   _commandParts = "";
   _reading = false;
 } 

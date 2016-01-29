@@ -23,7 +23,7 @@ boolean buttonEnabled = false;
 
 void setup(){
   
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   button.connect();
   
@@ -52,7 +52,7 @@ void setup(){
 
   tweener2.multiplier = .1;
 
-  keepAliveTimer.every(2000,keepAlive,0);
+  //keepAliveTimer.every(2000,keepAlive,0);
 }
 
 void loop(){
