@@ -23,7 +23,7 @@ boolean buttonEnabled = false;
 
 void setup(){
   
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   button.connect();
   
@@ -52,7 +52,6 @@ void setup(){
 
   tweener2.multiplier = .1;
 
-  //keepAliveTimer.every(2000,keepAlive,0);
 }
 
 void loop(){
@@ -72,12 +71,6 @@ void loop(){
   button_strip.setBrightness(tweener2.value);
   button_strip.show();
 }
-
-void keepAlive(void *context) {
-  Serial.print("(k,tick)");
-  
-}
-
 
 void handleTagChange( String tag ) {
   
