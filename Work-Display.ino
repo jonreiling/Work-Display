@@ -1,4 +1,3 @@
-
 #include "TagWatcher.h"
 #include "CommandWatcher.h"
 #include "Timer.h"
@@ -18,6 +17,7 @@ CommandWatcher commandWatcher;
 CapButton button = CapButton();
 Tweener tweener2;
 StripManager stripManager;
+Timer keepAliveTimer;
 
 boolean buttonEnabled = false;
 
@@ -52,6 +52,7 @@ void setup(){
 
   tweener2.multiplier = .1;
 
+  keepAliveTimer.every(2000,keepAlive,0);
 }
 
 void loop(){
@@ -61,8 +62,10 @@ void loop(){
   tweener2.tick();
   detector.tick();
   stripManager.tick();
+  keepAliveTimer.update();
+
   
-  button.tick();
+  if (buttonEnabled) button.tick();
 
 
    
@@ -70,6 +73,10 @@ void loop(){
   button_strip.show();
 }
 
+void keepAlive(void *context) {
+  Serial.print("(k,tick)");
+  
+}
 
 
 void handleTagChange( String tag ) {
