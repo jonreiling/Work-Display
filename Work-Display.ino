@@ -133,7 +133,7 @@ void handleButtonClick() {
   
 //  String jsonOutput = "{\"e\":\"b\",\"v\":\"click\"}";
 //  Serial.println( jsonOutput ); 
-   Serial.print("(b,c)");
+//   Serial.print("(b,c)");
   
 }
 
@@ -147,6 +147,8 @@ void handleButtonDoubleClick() {
 void handleButtonPress() {
     tweener2.targetValue = 60;
     tweener2.value = 60;
+   Serial.print("(b,c)");
+
 }
 
 void handleButtonRelease() {
